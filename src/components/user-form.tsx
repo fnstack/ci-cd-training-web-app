@@ -65,51 +65,85 @@ export function UserForm({ isOpen, onClose, onSubmit, initialData, title, submit
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+      <DialogContent className="sm:max-w-md glass-card border-border/50 professional-shadow">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+            {title}
+          </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-semibold text-foreground">
+                Full Name
+              </Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter user name"
+                placeholder="Enter the user's full name"
                 disabled={isLoading}
+                className={`h-11 transition-all duration-200 ${
+                  errors.name 
+                    ? 'border-destructive/50 focus:border-destructive focus:ring-destructive/20' 
+                    : 'focus:border-primary focus:ring-primary/20'
+                }`}
               />
               {errors.name && (
-                <p className="text-sm text-destructive">{errors.name}</p>
+                <div className="flex items-center space-x-2 text-destructive">
+                  <div className="w-1 h-1 rounded-full bg-destructive"></div>
+                  <p className="text-sm font-medium">{errors.name}</p>
+                </div>
               )}
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-semibold text-foreground">
+                Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter email address"
+                placeholder="user@example.com"
                 disabled={isLoading}
+                className={`h-11 transition-all duration-200 ${
+                  errors.email 
+                    ? 'border-destructive/50 focus:border-destructive focus:ring-destructive/20' 
+                    : 'focus:border-primary focus:ring-primary/20'
+                }`}
               />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
+                <div className="flex items-center space-x-2 text-destructive">
+                  <div className="w-1 h-1 rounded-full bg-destructive"></div>
+                  <p className="text-sm font-medium">{errors.email}</p>
+                </div>
               )}
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
               disabled={isLoading}
+              className="w-full sm:w-auto h-11 transition-all duration-200 hover:scale-105"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Loading..." : submitText}
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full sm:w-auto h-11 gradient-bg transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+            >
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                submitText
+              )}
             </Button>
           </DialogFooter>
         </form>

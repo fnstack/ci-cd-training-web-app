@@ -63,62 +63,108 @@ export default function UsersPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8 px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-primary text-primary-foreground rounded-lg">
-              <Users className="h-5 w-5" />
+    <div className="min-h-screen">
+      <div className="container mx-auto py-12 px-4 max-w-7xl">
+        {/* Header Section */}
+        <div className="relative mb-12">
+          <div className="absolute inset-0 gradient-bg rounded-3xl opacity-10"></div>
+          <div className="relative glass-card p-8 rounded-3xl professional-shadow">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <div className="flex items-center justify-center w-16 h-16 gradient-bg text-primary-foreground rounded-2xl professional-shadow">
+                    <Users className="h-8 w-8" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                    User Management
+                  </h1>
+                  <p className="text-lg text-muted-foreground mt-1">
+                    Streamline your user management workflow
+                  </p>
+                </div>
+              </div>
+              <div className="flex space-x-3">
+                <Button
+                  variant="outline"
+                  onClick={loadUsers}
+                  disabled={loading}
+                  className="h-11 px-6 hover:scale-105 transition-transform duration-200"
+                >
+                  <RefreshCw className={`h-5 w-5 mr-2 ${loading ? "animate-spin" : ""}`} />
+                  Refresh
+                </Button>
+                <Button 
+                  onClick={() => setShowCreateForm(true)}
+                  className="h-11 px-6 gradient-bg hover:scale-105 transition-transform duration-200 professional-shadow"
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Add User
+                </Button>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
-              <p className="text-muted-foreground">
-                Manage users in your application
-              </p>
-            </div>
-          </div>
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              onClick={loadUsers}
-              disabled={loading}
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-              Refresh
-            </Button>
-            <Button onClick={() => setShowCreateForm(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add User
-            </Button>
           </div>
         </div>
 
+        {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-            <p className="text-sm text-destructive">
-              <strong>Error:</strong> {error}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Make sure the API is running and accessible.
-            </p>
+          <div className="mb-8 relative">
+            <div className="glass-card p-6 rounded-2xl border-l-4 border-destructive professional-shadow">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-destructive rounded-full"></div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-destructive mb-1">Connection Error</h3>
+                  <p className="text-sm text-destructive/80 mb-2">{error}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Make sure the API service is running and accessible.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        <div className="bg-card rounded-lg border shadow-sm">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
+        {/* Main Content Card */}
+        <div className="glass-card rounded-3xl professional-shadow overflow-hidden">
+          <div className="bg-gradient-to-r from-primary/5 to-primary/10 p-6 border-b border-border/50">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-semibold">Users</h2>
-                <p className="text-sm text-muted-foreground">
-                  {users.length} user{users.length !== 1 ? 's' : ''} total
-                </p>
+                <h2 className="text-2xl font-bold tracking-tight">Active Users</h2>
+                <div className="flex items-center space-x-2 mt-2">
+                  <div className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+                    {users.length} user{users.length !== 1 ? 's' : ''}
+                  </div>
+                  {!loading && users.length > 0 && (
+                    <div className="text-sm text-muted-foreground">
+                      Last updated: {new Date().toLocaleTimeString()}
+                    </div>
+                  )}
+                </div>
               </div>
+              {!loading && users.length > 0 && (
+                <div className="text-xs text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg">
+                  Click on any row to edit user details
+                </div>
+              )}
             </div>
-            
+          </div>
+          
+          <div className="p-6">
             {loading ? (
-              <div className="text-center py-8">
-                <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2" />
-                <p className="text-muted-foreground">Loading users...</p>
+              <div className="text-center py-16">
+                <div className="relative mx-auto w-12 h-12 mb-4">
+                  <RefreshCw className="w-12 h-12 animate-spin text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Loading Users</h3>
+                <p className="text-muted-foreground">Please wait while we fetch the latest data...</p>
               </div>
             ) : (
               <UsersTable 
