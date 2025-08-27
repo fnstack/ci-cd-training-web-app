@@ -1,6 +1,6 @@
 import { User, UserSchema, CreateUserRequest, CreateUserRequestSchema } from "@/types/user"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const API_BASE_URL = "/api"
 
 class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -28,18 +28,18 @@ async function fetchApi(endpoint: string, options?: RequestInit) {
 
 export const usersApi = {
   async getAll(): Promise<User[]> {
-    const data = await fetchApi("/api/Users")
+    const data = await fetchApi("/users")
     return UserSchema.array().parse(data)
   },
 
   async getById(id: number): Promise<User> {
-    const data = await fetchApi(`/api/Users/${id}`)
+    const data = await fetchApi(`/users/${id}`)
     return UserSchema.parse(data)
   },
 
   async create(user: CreateUserRequest): Promise<User> {
     const validatedUser = CreateUserRequestSchema.parse(user)
-    const data = await fetchApi("/api/Users", {
+    const data = await fetchApi("/users", {
       method: "POST",
       body: JSON.stringify(validatedUser),
     })
@@ -48,7 +48,7 @@ export const usersApi = {
 
   async update(id: number, user: CreateUserRequest): Promise<User> {
     const validatedUser = CreateUserRequestSchema.parse(user)
-    const data = await fetchApi(`/api/Users/${id}`, {
+    const data = await fetchApi(`/users/${id}`, {
       method: "PUT",
       body: JSON.stringify(validatedUser),
     })
@@ -56,7 +56,7 @@ export const usersApi = {
   },
 
   async delete(id: number): Promise<void> {
-    await fetchApi(`/api/Users/${id}`, {
+    await fetchApi(`/users/${id}`, {
       method: "DELETE",
     })
   },

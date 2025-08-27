@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://user-api:5000
+      - NEXT_PUBLIC_API_URL=http://user-api:8080
     volumes:
       - .env.local:/app/.env.local
     restart: unless-stopped
