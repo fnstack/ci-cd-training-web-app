@@ -4,7 +4,7 @@ A professional Next.js application for user management that consumes a .NET Core
 
 npm i -g npm bun @anthropic-ai/claude-code
 
-git remote add gitea https://gitea.arpce.fnstack.dev/fnstack/training-web-app.git
+git remote add origin https://gitea.arpce.fnstack.dev/fnstack/web-app.git
 
 ## Features
 
